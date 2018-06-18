@@ -1,0 +1,5 @@
+FROM mongo
+LABEL Ezequiel Mapel <ezequiel.f.mapel@gmail.com>
+
+WORKDIR /home/desafio/db
+EXPOSE 3030

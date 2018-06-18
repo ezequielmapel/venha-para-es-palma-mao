@@ -1,0 +1,5 @@
+FROM node:7
+label Ezequiel Mapel <ezequiel.f.mapel@gmail.com>
+
+WORKDIR /home/desafio/web
+EXPOSE 80

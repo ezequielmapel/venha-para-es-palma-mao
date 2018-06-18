@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Desafio</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css' />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script type="text/javascript" src="/javascripts/jquery.min.js"></script>  
+</head>
+  <body>
+    <div class="container-fluid">
+      <div class="row bg">
+        <div class="col-lg-4 cadastro">
+          <button id="btnCpf" class="btnBuscar btn1" type="button">BUSCAR POR CPF</button>
+          <button id="btnCod" class="btnBuscar btn1" type="button">BUSCAR POR CÓDIGO DO CONCURSO</button>
+          <div class="tipoBusca">
+            
+            <div id="buscaCpf" class="buscaCpf">
+                <button id="btnBuscar" class="btnBuscar" type="button">BUSCAR</button>
+              <input id="cpf" class="inp" maxlength="80" placeholder="CPF" name="inpCpf">
+               <div id="resultBusca" class="resultBusca"></div>  
+            </div>
+            <div id="buscaCod" class="buscaCod">
+                <button id="btnBuscarCod" class="btnBuscar" type="button">BUSCAR</button>
+              <input id="cod" class="inp" maxlength="40" placeholder="CODIGO" name="inpCod">
+              <div id="resultBuscaCod" class="resultBusca"></div>
+            </div>
+              
+             
+              
+          </div>
+        </div>
+      </div>
+  </div>
+  <script>
+  $('#btnCpf').click(function(){
+      /* Alternar de 'buscaCod' para 'buscaCpf' quando clicado no botão 'btnCpf' */
+    $('#buscaCod').css('display', 'none');
+    $('#buscaCpf').css('display', 'block');
+   
+  });
+
+  $('#btnCod').click(function(){
+    /* Alternar de 'buscaCpf' para 'buscaCod' */
+    $('#buscaCpf').css('display', 'none');
+    $('#buscaCod').css('display', 'block');
+    
+  });
+      
+  $('#btnBuscar').click(function(){
+      // Pegando valores do input para enviar ao servidor
+      var value = $('#cpf').val();
+      var param = {cpf:value};
+      $.get('/buscar-cpf', param ,function(data){
+         $('#resultBusca').text("");
+              // Mostrando resultado de volta
+              // Data é a busca feita no banco de dados
+              for (var i=0; i<data.length; i++){
+                  
+                  $('#resultBusca').append('<h5>Vagas que encaixam em seu perfil</h5><br><table id="table">'+
+                              '<tr>'+
+                                '<th>Órgão</th>'+
+                                '<th>Edital</th>'+
+                                '<th>Código do Concurso</th>'+
+                              '</tr>'+
+                             ' <tr>'+
+                                '<td id="orgao">'+data[i].orgao+'</td>'+
+                                '<td id="edital">'+data[i].edital+'</td>'+
+                               ' <td id="cod">'+data[i].cod+'</td>'+
+                              '</tr>'+
+                           ' </table>'+
+                           ' <table>'+
+                                '<tr>'+
+                                   ' <th>Lista de vagas</th>'+
+                                '</tr>'+
+                                '<tr>'+
+                                    '<td id="listVagas">' + data[i].listaVagas+ '</td>'+
+                                '</tr>'+
+                            '</table><br><br>');
+              
+          
+      };
+      });
+  });
+      
+$('#btnBuscarCod').click(function(){
+    // Pegando valores do input para enviar ao servidor
+    var cod = $('#cod').val();
+    var param = {cod:cod};
+        
+    $.get('/buscar-cod', param, function(data){
+          $('#resultBuscaCod').text("");
+               // Mostrando resultado de volta
+              // Data é a busca feita no banco de dados
+              for (var i=0; i<data.length; i++){
+                  
+                  $('#resultBuscaCod').append('<h5>Candidatos com o perfil do concurso:</h5><br><table id="table">'+
+                              '<tr>'+
+                                '<th>Nome</th>'+
+                                '<th>Data Nascimento</th>'+
+                                '<th>CPF</th>'+
+                              '</tr>'+
+                             ' <tr>'+
+                                '<td>'+data[i].nome+'</td>'+
+                                '<td>'+data[i].nasc+'</td>'+
+                               ' <td>'+data[i].cpf+'</td>'+
+                              '</tr>'+
+                           ' </table>'+
+                           ' <table>'+
+                                '<tr>'+
+                                   ' <th>Profissões</th>'+
+                                '</tr>'+
+                                '<tr>'+
+                                    '<td>' + data[i].prof+ '</td>'+
+                                '</tr>'+
+                            '</table><br><br>');
+              
+          
+      };
+        
+    });
+});
+  </script>
+  </body>
+</html>
